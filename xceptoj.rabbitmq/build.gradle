@@ -1,0 +1,7 @@
+dependencies {
+    implementation project(":xceptoj")
+    implementation 'com.google.code.gson:gson:2.13.1'
+    implementation 'com.rabbitmq:amqp-client:5.25.0'
+    implementation 'jakarta.inject:jakarta.inject-api:2.0.1'
+    implementation 'io.github.resilience4j:resilience4j-retry:2.3.0'
+}

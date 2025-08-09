@@ -1,0 +1,105 @@
+plugins{
+    id 'java'
+    id 'maven-publish'
+    id 'signing'
+    id 'org.jreleaser' version '1.15.0'
+}
+
+group = 'org.xcepto'
+version = '1.0.0'
+
+dependencies {
+    implementation 'jakarta.inject:jakarta.inject-api:2.0.1'
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+
+publishing {
+    repositories {
+        // ...
+        maven {
+            name = "PreDeploy"
+            url = uri(layout.buildDirectory.dir("pre-deploy"))
+        }
+    }
+    publications {
+        xceptoj(MavenPublication) {
+            from components.java
+            pom {
+                name = 'xceptoj'
+                description = 'Declarative BDD framework for distributed systems'
+                url = 'https://github.com/xcepto/xceptoj'
+                licenses {
+                    license {
+                        name = 'MIT'
+                        url = 'https://opensource.org/license/mit'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'themassiveone'
+                        name = 'themassiveone'
+                        email = 'me@themassiveone.net'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/xcepto/xceptoj.git'
+                    developerConnection = 'scm:git:ssh://github.com:xcepto/xceptoj.git'
+                    url = 'https://github.com/xcepto/xceptoj'
+                }
+            }
+        }
+    }
+}
+
+
+
+signing {
+    setRequired {
+        gradle.taskGraph.allTasks.any { it.name.contains("LocalMavenWithChecksums") }
+    }
+    sign publishing.publications.xceptoj
+}
+
+
+tasks.withType(Jar) { task ->
+    task.doLast {
+        ant.checksum algorithm: 'md5', file: it.archivePath
+        ant.checksum algorithm: 'sha1', file: it.archivePath
+    }
+}
+
+jreleaser {
+    project {
+        copyright = 'themassiveone'
+        description = 'Acceptence testing framework'
+    }
+    signing {
+        active = 'ALWAYS'
+        armored = true
+        mode = 'FILE'
+        passphrase = findProperty("ossrhUsername") ?: System.getenv("OSSRH_USERNAME")
+    }
+    deploy {
+        maven {
+            mavenCentral {
+                sonatype {
+                    active = 'ALWAYS'
+                    url = 'https://central.sonatype.com/api/v1/publisher'
+                    username = findProperty("ossrhUsername") ?: System.getenv("OSSRH_USERNAME")
+                    password = findProperty("ossrhPassword") ?: System.getenv("OSSRH_PASSWORD")
+                    stagingRepository('build/pre-deploy')
+                }
+            }
+        }
+    }
+    release {
+        github {
+            enabled = false
+        }
+    }
+}

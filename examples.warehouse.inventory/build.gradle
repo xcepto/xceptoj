@@ -1,0 +1,37 @@
+plugins {
+    id 'application'
+    id 'com.gradleup.shadow' version '8.3.6'
+}
+
+group = 'com.example.warehouse.inventory'
+version = '0.0.1-SNAPSHOT'
+
+application {
+    mainClass = 'com.example.warehouse.inventory.InventoryApplication'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': application.mainClass
+        )
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.rabbitmq:amqp-client:5.25.0'
+    implementation 'io.github.resilience4j:resilience4j-retry:2.3.0'
+    implementation 'com.google.code.gson:gson:2.13.1'
+    implementation project(":examples.warehouse.events")
+    implementation project(":examples.warehouse.common")
+    implementation 'org.postgresql:postgresql:42.7.5'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

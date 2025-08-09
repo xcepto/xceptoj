@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+}
+
+subprojects {
+    version = '1.0.0-alpha.0'
+
+    apply plugin: 'java'
+
+
+    java {
+        toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    tasks.named("test") {
+        finalizedBy(rootProject.tasks.named("composeDownAfter"))
+    }
+}
+
+tasks.register("composeDownAfter") {
+    doFirst {
+        exec {
+            commandLine("docker", "compose", "logs")
+        }
+    }
+    doLast {
+        exec {
+            commandLine("docker", "compose", "down")
+        }
+    }
+}

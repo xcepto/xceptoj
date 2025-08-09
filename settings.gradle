@@ -1,0 +1,23 @@
+rootProject.name = 'xceptoj'
+
+include 'xceptoj'
+project(':xceptoj').projectDir = file('xceptoj')
+include 'xceptoj.rabbitmq'
+project(':xceptoj.rabbitmq').projectDir = file('xceptoj.rabbitmq')
+include 'xceptoj.rest'
+project(':xceptoj.rest').projectDir = file('xceptoj.rest')
+
+include 'examples.warehouse.order'
+project(':examples.warehouse.order').projectDir = file('examples.warehouse.order')
+include 'examples.warehouse.inventory'
+project(':examples.warehouse.inventory').projectDir = file('examples.warehouse.inventory')
+include 'examples.warehouse.events'
+project(':examples.warehouse.events').projectDir = file('examples.warehouse.events')
+include 'examples.warehouse.shipping'
+project(':examples.warehouse.shipping').projectDir = file('examples.warehouse.shipping')
+include 'examples.warehouse.inbound'
+project(':examples.warehouse.inbound').projectDir = file('examples.warehouse.inbound')
+include 'examples.warehouse.stocktake'
+project(':examples.warehouse.stocktake').projectDir = file('examples.warehouse.stocktake')
+include 'examples.warehouse.common'
+project(':examples.warehouse.common').projectDir = file('examples.warehouse.common')

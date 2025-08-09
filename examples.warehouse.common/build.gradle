@@ -1,0 +1,7 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    implementation 'io.github.resilience4j:resilience4j-retry:2.3.0'
+}
