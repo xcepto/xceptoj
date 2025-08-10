@@ -92,12 +92,13 @@ jobs:
 
   publish-adapters:
     runs-on: ubuntu-latest
-    needs: [publish-xceptoj]
+    needs: [versions,publish-xceptoj]
 
     strategy:
       matrix:
         project:
           - xceptoj.rabbitmq
+          - xceptoj.rest
 
     steps:
       - name: Wait until xceptoj is available
