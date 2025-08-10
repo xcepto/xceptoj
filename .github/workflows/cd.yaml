@@ -46,19 +46,6 @@ jobs:
           git tag "${{ github.run_number }}"
           git push origin "${{ github.run_number }}"
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.run_number }}
-          release_name: Release v${{ env.VERSION }}
-          body: |
-            No release notes
-          draft: false
-          prerelease: false
-
   publish:
     needs: [ tests, versions ]
     runs-on: ubuntu-latest
@@ -80,18 +67,39 @@ jobs:
       - name: Run Build
         run: |
           ./gradlew ${{ matrix.project }}:test
+        env:
+          VERSION: ${{ needs.versions.outputs.VERSION }}
 
       - name: Run Publish to PreDeploy
         run: |
           NAME="${{ matrix.project }}"
           ./gradlew ${{ matrix.project }}:publish${NAME^}PublicationToPreDeployRepository
+        env:
+          VERSION: ${{ needs.versions.outputs.VERSION }}
 
       - name: Run JReleaser Deploy
         run: |
           ./gradlew ${{ matrix.project }}:jreleaserDeploy
         env:
+          VERSION: ${{ needs.versions.outputs.VERSION }}
           JRELEASER_MAVENCENTRAL_SONATYPE_USERNAME: ${{ secrets.SONATYPE_USER }}
           JRELEASER_MAVENCENTRAL_SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_SECRET_KEY }}
           JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.GPG_PUBLIC_KEY }}
           JRELEASER_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+  create-release:
+    needs: [publish, versions]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.run_number }}
+          release_name: Release v${{ needs.versions.outputs.VERSION }}
+          body: |
+            [https://central.sonatype.com/namespace/org.xcepto](https://central.sonatype.com/namespace/org.xcepto)
+          draft: false
+          prerelease: false
