@@ -2,7 +2,6 @@ package org.xcepto.xceptoj;
 
 import org.xcepto.xceptoj.exceptions.XceptoAdapterInitializationException;
 import org.xcepto.xceptoj.exceptions.XceptoAdapterTerminationException;
-import org.xcepto.xceptoj.exceptions.XceptoScenarioResetException;
 import org.xcepto.xceptoj.exceptions.XceptoTestFailedException;
 import org.xcepto.xceptoj.interfaces.LoggingProvider;
 import org.xcepto.xceptoj.interfaces.ServiceProvider;
@@ -18,7 +17,7 @@ public class AcceptanceTest {
     this.adapters = adapters;
   }
 
-  protected void ExecuteTest(XceptoStateMachine stateMachine,
+  protected void executeTest(XceptoStateMachine stateMachine,
                              Duration timeout,
                              Duration checkInterval)
       throws XceptoTestFailedException, XceptoAdapterInitializationException, XceptoAdapterTerminationException {
@@ -38,10 +37,10 @@ public class AcceptanceTest {
 
     // Act
     Instant startTime = Instant.now();
-    stateMachine.Start(serviceProvider);
+    stateMachine.start(serviceProvider);
     Duration elapsed = Duration.between(startTime, Instant.now());
     while (elapsed.toMillis() < timeout.toMillis()) {
-      stateMachine.TryTransition(serviceProvider);
+      stateMachine.tryTransition(serviceProvider);
       if (stateMachine.getCurrentState().equals(stateMachine.getFinalState()))
         break;
       try {

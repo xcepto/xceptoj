@@ -26,11 +26,11 @@ public class XceptoTests {
     InboundFlowScenario scenario = new InboundFlowScenario();
 
     // Given
-    Xcepto.Given(scenario, builder -> {
-      RabbitMqXceptoAdapter rabbitmq = builder.RegisterAdapter(
+    Xcepto.given(scenario, builder -> {
+      RabbitMqXceptoAdapter rabbitmq = builder.registerAdapter(
           new RabbitMqXceptoAdapter(WarehouseRabbitMqConfig.getConfig(
               scenario.getPort("rabbitmq", 5672))));
-      RestXceptoAdapter rest = builder.RegisterAdapter(new RestXceptoAdapter());
+      RestXceptoAdapter rest = builder.registerAdapter(new RestXceptoAdapter());
 
       // Arrange
       URI acceptUrl = URI.create("http://localhost:%d/shipment/accept".formatted(
@@ -49,11 +49,11 @@ public class XceptoTests {
   @Test
   public void largeShipmentReplenishesStock() throws XceptoScenarioResetException, XceptoAdapterInitializationException, XceptoTestFailedException, XceptoAdapterTerminationException {
     InboundFlowScenario scenario = new InboundFlowScenario();
-    Xcepto.Given(scenario, builder -> {
-      RabbitMqXceptoAdapter rabbitmq = builder.RegisterAdapter(
+    Xcepto.given(scenario, builder -> {
+      RabbitMqXceptoAdapter rabbitmq = builder.registerAdapter(
           new RabbitMqXceptoAdapter(WarehouseRabbitMqConfig.getConfig(
               scenario.getPort("rabbitmq", 5672))));
-      RestXceptoAdapter rest = builder.RegisterAdapter(new RestXceptoAdapter());
+      RestXceptoAdapter rest = builder.registerAdapter(new RestXceptoAdapter());
 
       URI url = URI.create("http://localhost:%d/shipment/accept".formatted(
           scenario.getPort("examples.warehouse.inbound", 8081)));

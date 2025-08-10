@@ -15,11 +15,11 @@ public class XceptoStateMachine {
     currentState = startState;
   }
 
-  public void Start(ServiceProvider serviceProvider) throws XceptoTestFailedException {
+  public void start(ServiceProvider serviceProvider) throws XceptoTestFailedException {
     currentState.onEnter(serviceProvider);
   }
 
-  public void TryTransition(ServiceProvider serviceProvider) throws XceptoTestFailedException {
+  public void tryTransition(ServiceProvider serviceProvider) throws XceptoTestFailedException {
     if (currentState.getNextState() == null)
       return;
 
@@ -40,12 +40,12 @@ public class XceptoStateMachine {
     return finalState;
   }
 
-  public void Seal() {
+  public void seal() {
     currentState.setNextState(finalState);
     currentState = startState;
   }
 
-  public void AddTransition(XceptoState state) {
+  public void addTransition(XceptoState state) {
     currentState.setNextState(state);
     currentState = state;
   }

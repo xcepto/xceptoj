@@ -6,20 +6,20 @@ public class TransitionBuilder {
   private final XceptoStateMachine _stateMachine = new XceptoStateMachine();
   private final HashSet<XceptoAdapter> _adapters = new HashSet<>();
 
-  public void AddStep(XceptoState newState) {
-    _stateMachine.AddTransition(newState);
+  public void addStep(XceptoState newState) {
+    _stateMachine.addTransition(newState);
   }
 
-  XceptoStateMachine Build() {
-    _stateMachine.Seal();
+  XceptoStateMachine build() {
+    _stateMachine.seal();
     return _stateMachine;
   }
 
-  Iterable<XceptoAdapter> GetAdapters() {
+  Iterable<XceptoAdapter> getAdapters() {
     return _adapters;
   }
 
-  public <TXceptoAdapter extends XceptoAdapter> TXceptoAdapter RegisterAdapter(TXceptoAdapter adapter) {
+  public <TXceptoAdapter extends XceptoAdapter> TXceptoAdapter registerAdapter(TXceptoAdapter adapter) {
     adapter.injectBuilder(this);
     _adapters.add(adapter);
     return adapter;

@@ -9,14 +9,14 @@ import java.time.Duration;
 import java.util.function.Consumer;
 
 public class Xcepto {
-  public static <TScenario extends Scenario> void Given(
+  public static <TScenario extends Scenario> void given(
       TScenario scenario, Consumer<TransitionBuilder> builder) throws
       XceptoAdapterInitializationException,
       XceptoTestFailedException, XceptoScenarioResetException, XceptoAdapterTerminationException {
-    Given(scenario, builder, Duration.ofSeconds(10), Duration.ofMillis(100));
+    given(scenario, builder, Duration.ofSeconds(10), Duration.ofMillis(100));
   }
 
-  public static <TScenario extends Scenario> void Given(
+  public static <TScenario extends Scenario> void given(
       TScenario scenario,
       Consumer<TransitionBuilder> builder,
       Duration timeout,
@@ -29,8 +29,8 @@ public class Xcepto {
       var transitionBuilder = new TransitionBuilder();
       builder.accept(transitionBuilder);
 
-      AcceptanceTest runner = new AcceptanceTest(transitionBuilder.GetAdapters());
-      runner.ExecuteTest(transitionBuilder.Build(), timeout, checkInterval);
+      AcceptanceTest runner = new AcceptanceTest(transitionBuilder.getAdapters());
+      runner.executeTest(transitionBuilder.build(), timeout, checkInterval);
 
       scenario.stopEnvironment();
     } catch (XceptoAdapterInitializationException|

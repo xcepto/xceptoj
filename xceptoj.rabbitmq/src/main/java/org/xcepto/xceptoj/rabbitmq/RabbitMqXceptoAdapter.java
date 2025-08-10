@@ -72,7 +72,7 @@ public class RabbitMqXceptoAdapter extends XceptoAdapter {
     };
 
     String stateName = "EventConditionStepFor%s".formatted(schema.getSimpleName());
-    transitionBuilder.AddStep(new RabbitMqXceptoState(stateName, validation));
+    transitionBuilder.addStep(new RabbitMqXceptoState(stateName, validation));
   }
 
   @Override

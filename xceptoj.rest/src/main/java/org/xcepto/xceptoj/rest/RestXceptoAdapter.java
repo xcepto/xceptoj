@@ -56,7 +56,7 @@ public class RestXceptoAdapter extends XceptoAdapter {
         responseType,
         retryConfig
     );
-    transitionBuilder.AddStep(postRequestState);
+    transitionBuilder.addStep(postRequestState);
   }
 
   public void getHtmlCondition(URI url, Predicate<String> responsePredicate) {
@@ -73,7 +73,7 @@ public class RestXceptoAdapter extends XceptoAdapter {
         validator,
         retryConfig
     );
-    transitionBuilder.AddStep(getHtmlCondition);
+    transitionBuilder.addStep(getHtmlCondition);
   }
 
   @Override
