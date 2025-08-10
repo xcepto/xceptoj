@@ -54,6 +54,7 @@ jobs:
       matrix:
         project:
           - xceptoj
+          - xceptoj.rabbitmq
 
     steps:
       - name: Checkout code
@@ -73,7 +74,9 @@ jobs:
       - name: Run Publish to PreDeploy
         run: |
           NAME="${{ matrix.project }}"
-          ./gradlew ${{ matrix.project }}:publish${NAME^}PublicationToPreDeployRepository
+          NAME="${NAME^}" # Capitalize first letter
+          NAME="${NAME//-/_}" # Replace dash with underscore
+          ./gradlew ${{ matrix.project }}:publish${NAME}PublicationToPreDeployRepository
         env:
           VERSION: ${{ needs.versions.outputs.VERSION }}
 
