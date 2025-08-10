@@ -104,16 +104,19 @@ jobs:
       - name: Wait until xceptoj is available
         run: |
           for i in {1..30}; do
-            if curl --head --silent \
-              "https://repo.maven.apache.org/maven2/org/xcepto/xceptoj/${{ needs.versions.outputs.VERSION }}/xceptoj-${{ needs.versions.outputs.VERSION }}.pom" \
-              | grep "200 OK" > /dev/null; then
-              echo "Xceptoj is available"
+            status=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://repo.maven.apache.org/maven2/org/xcepto/xceptoj/${{ needs.versions.outputs.VERSION }}/xceptoj-${{ needs.versions.outputs.VERSION }}.pom")
+            
+            if [[ "$status" =~ ^2|3 ]]; then
+              echo "Package is available (HTTP $status)"
               exit 0
             fi
-            echo "Waiting for Maven Central..."
+          
+            echo "Waiting for Maven Central... (HTTP $status)"
             sleep 10
           done
-          echo "Timed out waiting for xceptoj availability"
+          
+          echo "Timed out waiting for package availability"
           exit 1
 
       - name: Checkout code
