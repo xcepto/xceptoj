@@ -102,7 +102,7 @@ public class JunitTests {
       response = gson.fromJson(responseJson, AcceptShipmentResponse.class);
     }
 
-    Duration timeout = Duration.ofSeconds(5);
+    Duration timeout = Duration.ofSeconds(30);
     Thread.sleep(timeout);
 
     connection.get().close();

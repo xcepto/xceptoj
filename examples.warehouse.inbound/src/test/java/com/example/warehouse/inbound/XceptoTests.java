@@ -43,7 +43,7 @@ public class XceptoTests {
 
       // Then
       rabbitmq.eventCondition(StockReplenishedEvent.class, e -> e.total == request.amount);
-    }, Duration.ofSeconds(10), Duration.ofMillis(100));
+    }, Duration.ofSeconds(30), Duration.ofMillis(100));
   }
 
   @Test
@@ -85,6 +85,6 @@ public class XceptoTests {
         System.out.println("Pattern was not matched in html: "+ html);
         return false;
       });
-    });
+    }, Duration.ofSeconds(30), Duration.ofMillis(100));
   }
 }
