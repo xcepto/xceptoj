@@ -1,0 +1,20 @@
+name: Xcepto .NET release pipeline
+on:
+  push:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: |
+          docker compose build
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Run tests
+        run: ./gradlew test
