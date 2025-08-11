@@ -137,7 +137,7 @@ jobs:
         run: |
           NAME="${{ matrix.project }}"
           NAME="${NAME^}" # Capitalize first letter
-          NAME="${NAME//-/_}" # Replace dash with underscore
+          NAME="${NAME//./_}" # Replace dash with underscore
           ./gradlew ${{ matrix.project }}:publish${NAME}PublicationToPreDeployRepository
         env:
           VERSION: ${{ needs.versions.outputs.VERSION }}
