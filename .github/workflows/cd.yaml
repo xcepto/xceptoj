@@ -20,6 +20,7 @@ jobs:
         run: ./gradlew test
 
   versions:
+    if: github.repository == 'xcepto/xceptoj'
     runs-on: ubuntu-latest
     name: Determine Versions
     needs: [ tests ]
@@ -47,6 +48,7 @@ jobs:
           git push origin "${{ github.run_number }}"
 
   publish-xceptoj:
+    if: github.repository == 'xcepto/xceptoj'
     needs: [ tests, versions ]
     runs-on: ubuntu-latest
 
@@ -77,6 +79,7 @@ jobs:
           JRELEASER_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
   create-release:
+    if: github.repository == 'xcepto/xceptoj'
     needs: [publish-xceptoj, versions]
     runs-on: ubuntu-latest
     steps:
