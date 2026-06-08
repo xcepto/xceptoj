@@ -35,14 +35,14 @@ public class AcceptanceTest {
     serviceCollection.register(LoggingProvider.class, org.xcepto.xceptoj.LoggingProvider::new);
     ServiceProvider serviceProvider = serviceCollection.buildServiceProvider();
 
-    var initializedAdapters = new ArrayList<XceptoAdapter>();
+    var adaptersToTerminate = new ArrayList<XceptoAdapter>();
     Throwable primaryFailure = null;
 
     try {
       for (XceptoAdapter adapter : adapters) {
         try {
+          adaptersToTerminate.add(adapter);
           adapter.initialize(serviceProvider);
-          initializedAdapters.add(adapter);
         } catch (XceptoAdapterInitializationException e) {
           primaryFailure = e;
           throw e;
@@ -80,14 +80,14 @@ public class AcceptanceTest {
       primaryFailure = e;
       throw e;
     } finally {
-      terminateInitializedAdapters(initializedAdapters, primaryFailure);
+      terminateAdapters(adaptersToTerminate, primaryFailure);
     }
   }
 
-  private void terminateInitializedAdapters(Iterable<XceptoAdapter> initializedAdapters, Throwable primaryFailure)
+  private void terminateAdapters(Iterable<XceptoAdapter> adaptersToTerminate, Throwable primaryFailure)
       throws XceptoAdapterTerminationException {
     XceptoAdapterTerminationException cleanupFailure = null;
-    for (XceptoAdapter adapter : initializedAdapters) {
+    for (XceptoAdapter adapter : adaptersToTerminate) {
       try {
         adapter.terminate();
       } catch (XceptoAdapterTerminationException e) {
