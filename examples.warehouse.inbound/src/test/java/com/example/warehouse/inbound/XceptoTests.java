@@ -4,6 +4,7 @@ import com.example.warehouse.events.StockReplenishedEvent;
 import com.example.warehouse.inbound.config.WarehouseRabbitMqConfig;
 import com.example.warehouse.inbound.requests.AcceptShipmentRequest;
 import com.example.warehouse.inbound.requests.AcceptShipmentResponse;
+import org.junit.jupiter.api.Disabled;
 import org.xcepto.xceptoj.Xcepto;
 import org.xcepto.xceptoj.exceptions.XceptoAdapterInitializationException;
 import org.xcepto.xceptoj.exceptions.XceptoAdapterTerminationException;
@@ -21,6 +22,7 @@ import java.util.regex.Pattern;
 public class XceptoTests {
 
   @Test
+  @Disabled("RabbitMQ adapter is being deprecated")
   public void smallShipmentReplenishesStock() throws XceptoScenarioResetException, XceptoAdapterInitializationException, XceptoTestFailedException, XceptoAdapterTerminationException {
 
     InboundFlowScenario scenario = new InboundFlowScenario();
@@ -47,6 +49,7 @@ public class XceptoTests {
   }
 
   @Test
+  @Disabled("RabbitMQ adapter is being deprecated")
   public void largeShipmentReplenishesStock() throws XceptoScenarioResetException, XceptoAdapterInitializationException, XceptoTestFailedException, XceptoAdapterTerminationException {
     InboundFlowScenario scenario = new InboundFlowScenario();
     Xcepto.given(scenario, builder -> {

@@ -14,9 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: |
-          docker compose build
-
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'

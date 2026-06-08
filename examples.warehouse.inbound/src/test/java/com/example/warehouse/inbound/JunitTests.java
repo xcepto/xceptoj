@@ -8,6 +8,7 @@ import com.rabbitmq.client.*;
 import io.github.resilience4j.core.IntervalFunction;
 import io.github.resilience4j.retry.Retry;
 import io.github.resilience4j.retry.RetryConfig;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ import java.util.function.Supplier;
 public class JunitTests {
 
   @Test
+  @Disabled("RabbitMQ adapter is being deprecated")
   public void simpleSequentialTest() throws Exception {
 
     // Given
