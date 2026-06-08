@@ -1,5 +1,6 @@
 package org.xcepto.xceptoj;
 
+import org.xcepto.xceptoj.exceptions.StateInitException;
 import org.xcepto.xceptoj.exceptions.XceptoTestFailedException;
 import org.xcepto.xceptoj.interfaces.ServiceProvider;
 
@@ -20,6 +21,9 @@ public abstract class XceptoState {
   public abstract boolean evaluateConditionsForTransition(ServiceProvider serviceProvider) throws XceptoTestFailedException;
 
   public abstract void onEnter(ServiceProvider serviceProvider) throws XceptoTestFailedException;
+
+  public void initialize(ServiceProvider serviceProvider) throws StateInitException {
+  }
 
   public XceptoState getNextState() {
     return nextXceptoState;

@@ -1,6 +1,12 @@
 name: Xcepto Java release pipeline
 on:
   push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
 
 jobs:
   tests:
@@ -20,6 +26,9 @@ jobs:
         run: ./gradlew test
 
   versions:
+    if: github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      github.repository == 'xcepto/xceptoj'
     runs-on: ubuntu-latest
     name: Determine Versions
     needs: [ tests ]
@@ -47,6 +56,9 @@ jobs:
           git push origin "${{ github.run_number }}"
 
   publish-xceptoj:
+    if: github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      github.repository == 'xcepto/xceptoj'
     needs: [ tests, versions ]
     runs-on: ubuntu-latest
 
@@ -77,6 +89,9 @@ jobs:
           JRELEASER_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
   create-release:
+    if: github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      github.repository == 'xcepto/xceptoj'
     needs: [publish-xceptoj, versions]
     runs-on: ubuntu-latest
     steps:
