@@ -1,4 +1,4 @@
-package org.xcepto.xceptoj.rest.internals;
+package org.xcepto.xceptoj.http.data;
 
 import org.xcepto.xceptoj.exceptions.XceptoTestFailedException;
 

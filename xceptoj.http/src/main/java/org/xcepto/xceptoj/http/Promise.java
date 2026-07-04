@@ -1,4 +1,4 @@
-package org.xcepto.xceptoj.rest;
+package org.xcepto.xceptoj.http;
 
 public class Promise<T> {
   private volatile T value;
@@ -10,9 +10,8 @@ public class Promise<T> {
   }
 
   public T resolve() {
-    if (!settled)
-      throw new IllegalStateException(
-          "Promise not yet settled; ensure the step that settles this promise runs before the step that uses it");
+    if (!settled) throw new IllegalStateException(
+        "Promise not yet settled — resolve() called before the step that settles it has completed");
     return value;
   }
 }

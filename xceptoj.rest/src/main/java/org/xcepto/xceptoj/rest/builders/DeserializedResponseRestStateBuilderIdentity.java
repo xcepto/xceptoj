@@ -2,7 +2,8 @@ package org.xcepto.xceptoj.rest.builders;
 
 import org.xcepto.xceptoj.TransitionBuilder;
 import org.xcepto.xceptoj.exceptions.XceptoTestFailedException;
-import org.xcepto.xceptoj.rest.Promise;
+import org.xcepto.xceptoj.http.Promise;
+import org.xcepto.xceptoj.http.data.HttpResponseAssertion;
 import org.xcepto.xceptoj.rest.Serializer;
 import org.xcepto.xceptoj.rest.internals.RestHttpState;
 
@@ -27,7 +28,7 @@ public final class DeserializedResponseRestStateBuilderIdentity<TResponse>
   }
 
   public DeserializedResponseRestStateBuilderIdentity<TResponse> assertThatResponse(Predicate<TResponse> predicate) {
-    return assertThatResponse(response -> {
+    return assertThatResponse((HttpResponseAssertion) response -> {
       if (serializer == null)
         throw new XceptoTestFailedException(
             "No serializer defined; call withSerializer() before assertThatResponse(Predicate)");

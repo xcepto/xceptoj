@@ -1,4 +1,4 @@
-package org.xcepto.xceptoj.rest.data;
+package org.xcepto.xceptoj.http.data;
 
 public enum HttpMethodVerb {
   GET, POST, PATCH, PUT, DELETE

@@ -7,7 +7,7 @@ import org.xcepto.xceptoj.exceptions.XceptoAdapterTerminationException;
 import org.xcepto.xceptoj.interfaces.ServiceCollection;
 import org.xcepto.xceptoj.interfaces.ServiceProvider;
 import org.xcepto.xceptoj.rest.builders.RestStateBuilderIdentity;
-import org.xcepto.xceptoj.rest.data.HttpMethodVerb;
+import org.xcepto.xceptoj.http.data.HttpMethodVerb;
 
 import java.net.URI;
 import java.net.http.HttpClient;

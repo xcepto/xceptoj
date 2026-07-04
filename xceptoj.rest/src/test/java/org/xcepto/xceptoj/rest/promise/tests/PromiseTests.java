@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.xcepto.xceptoj.TimeoutConfig;
 import org.xcepto.xceptoj.Xcepto;
 import org.xcepto.xceptoj.exceptions.XceptoTestFailedException;
-import org.xcepto.xceptoj.rest.Promise;
+import org.xcepto.xceptoj.http.Promise;
 import org.xcepto.xceptoj.rest.builders.RestAdapterBuilder;
 import org.xcepto.xceptoj.rest.scenarios.GsonSerializer;
 import org.xcepto.xceptoj.rest.scenarios.LocalHttpScenario;

@@ -31,6 +31,7 @@ dependencies {
     implementation project(":examples.warehouse.events")
     implementation project(":examples.warehouse.common")
     testImplementation project(':xceptoj')
+    testImplementation project(':xceptoj.http')
     testImplementation project(':xceptoj.rabbitmq')
     testImplementation project(':xceptoj.rest')
 }

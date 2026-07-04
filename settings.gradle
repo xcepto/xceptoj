@@ -4,8 +4,12 @@ include 'xceptoj'
 project(':xceptoj').projectDir = file('xceptoj')
 include 'xceptoj.rabbitmq'
 project(':xceptoj.rabbitmq').projectDir = file('xceptoj.rabbitmq')
+include 'xceptoj.http'
+project(':xceptoj.http').projectDir = file('xceptoj.http')
 include 'xceptoj.rest'
 project(':xceptoj.rest').projectDir = file('xceptoj.rest')
+include 'xceptoj.ssr'
+project(':xceptoj.ssr').projectDir = file('xceptoj.ssr')
 
 include 'examples.warehouse.order'
 project(':examples.warehouse.order').projectDir = file('examples/warehouse/order')
