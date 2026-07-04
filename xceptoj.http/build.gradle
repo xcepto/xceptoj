@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group = 'org.xcepto'
+version = System.getenv("VERSION") ?: "1.0.0"
+
+dependencies {
+    implementation project(":xceptoj")
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        xceptoj_http(MavenPublication) {
+            artifactId = 'xceptoj-http'
+            from components.java
+            pom {
+                name = 'xceptoj-http'
+                description = 'Shared HTTP abstractions for xceptoj adapters'
+                url = 'https://github.com/xcepto/xceptoj'
+                licenses {
+                    license {
+                        name = 'MIT'
+                        url = 'https://opensource.org/license/mit'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'themassiveone'
+                        name = 'themassiveone'
+                        email = 'me@themassiveone.net'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/xcepto/xceptoj.git'
+                    developerConnection = 'scm:git:ssh://github.com:xcepto/xceptoj.git'
+                    url = 'https://github.com/xcepto/xceptoj'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = 'staging'
+            url = uri("${rootProject.buildDir}/staging-deploy")
+        }
+    }
+}
+
+tasks.withType(Jar) { task ->
+    task.doLast {
+        ant.checksum algorithm: 'md5', file: it.archivePath
+        ant.checksum algorithm: 'sha1', file: it.archivePath
+    }
+}

@@ -1,98 +1,90 @@
 package org.xcepto.xceptoj.rest;
 
-import com.google.gson.Gson;
 import org.xcepto.xceptoj.TransitionBuilder;
 import org.xcepto.xceptoj.XceptoAdapter;
-import org.xcepto.xceptoj.XceptoState;
-import org.xcepto.xceptoj.exceptions.XceptoTestFailedException;
+import org.xcepto.xceptoj.exceptions.XceptoAdapterInitializationException;
+import org.xcepto.xceptoj.exceptions.XceptoAdapterTerminationException;
 import org.xcepto.xceptoj.interfaces.ServiceCollection;
 import org.xcepto.xceptoj.interfaces.ServiceProvider;
-import io.github.resilience4j.core.IntervalFunction;
-import io.github.resilience4j.retry.RetryConfig;
+import org.xcepto.xceptoj.rest.builders.RestStateBuilderIdentity;
+import org.xcepto.xceptoj.http.data.HttpMethodVerb;
 
 import java.net.URI;
-import java.util.function.Predicate;
+import java.net.http.HttpClient;
+import java.util.function.Supplier;
 
 public class RestXceptoAdapter extends XceptoAdapter {
-
-  private final RetryConfig retryConfig;
-  private final Gson gson = new Gson();
-
+  private final HttpClient httpClient;
+  private final URI baseUrl;
+  private final Serializer serializer;
   private TransitionBuilder transitionBuilder;
 
-  public RestXceptoAdapter(RetryConfig retryConfig) {
-    this.retryConfig = retryConfig;
-  }
-
-  public RestXceptoAdapter() {
-    this.retryConfig = getDefaultRetryConfig();
-  }
-
-  private RetryConfig getDefaultRetryConfig() {
-    return RetryConfig.custom()
-        .maxAttempts(6)
-        .intervalFunction(IntervalFunction.ofExponentialBackoff(1000, 2.0))
-        .build();
-  }
-
-  public <TRequest, TResponse> void postRequest(URI url, TRequest request, Class<TResponse> responseType, Predicate<TResponse> responsePredicate) {
-    RestResponseValidator validator = response -> {
-      try {
-        TResponse castedResponse = responseType.cast(response);
-        if (responsePredicate.test(castedResponse))
-          return true;
-        String stringifiedResponse = gson.toJson(castedResponse);
-        throw new XceptoTestFailedException("Response validation of failed, with response: %s".formatted(stringifiedResponse));
-      } catch (ClassCastException classCastException) {
-        throw new XceptoTestFailedException("Response from rest endpoint was not castable to %s".formatted(responseType.getName()));
-      }
-    };
-
-    XceptoState postRequestState = new PostRequestXceptoState(
-        "%sPostRequestState".formatted(responseType.getName()),
-        url,
-        gson.toJson(request),
-        validator,
-        responseType,
-        retryConfig
-    );
-    transitionBuilder.addStep(postRequestState);
-  }
-
-  public void getHtmlCondition(URI url, Predicate<String> responsePredicate) {
-    RestResponseValidator validator = response -> {
-      String responseHtml = response.toString();
-      if (responsePredicate.test(responseHtml))
-        return true;
-      throw new XceptoTestFailedException("Response validation of failed, with response: %s".formatted(responseHtml));
-    };
-
-    XceptoState getHtmlCondition = new GetHtmlConditionXceptoState(
-        "GetHtmlConditionState",
-        url,
-        validator,
-        retryConfig
-    );
-    transitionBuilder.addStep(getHtmlCondition);
-  }
-
-  @Override
-  protected void initialize(ServiceProvider serviceProvider) {
-
-  }
-
-  @Override
-  protected void addServices(ServiceCollection serviceCollection) {
-
-  }
-
-  @Override
-  protected void terminate() {
-
+  public RestXceptoAdapter(HttpClient httpClient, URI baseUrl, Serializer serializer) {
+    this.httpClient = httpClient;
+    this.baseUrl = baseUrl;
+    this.serializer = serializer;
   }
 
   @Override
   protected void injectBuilder(TransitionBuilder builder) {
     this.transitionBuilder = builder;
   }
+
+  private RestStateBuilderIdentity inject(RestStateBuilderIdentity identity, HttpMethodVerb verb, Supplier<String> pathProducer) {
+    if (baseUrl != null) identity.withCustomBaseUrl(baseUrl);
+    if (serializer != null) identity.withSerializer(serializer);
+    identity.withCustomClient(httpClient);
+    identity.withHttpVerb(verb);
+    identity.withPathString(pathProducer);
+    return identity;
+  }
+
+  public RestStateBuilderIdentity get(String path) {
+    return inject(new RestStateBuilderIdentity(transitionBuilder), HttpMethodVerb.GET, () -> path);
+  }
+
+  public RestStateBuilderIdentity get(Supplier<String> pathProducer) {
+    return inject(new RestStateBuilderIdentity(transitionBuilder), HttpMethodVerb.GET, pathProducer);
+  }
+
+  public RestStateBuilderIdentity post(String path) {
+    return inject(new RestStateBuilderIdentity(transitionBuilder), HttpMethodVerb.POST, () -> path);
+  }
+
+  public RestStateBuilderIdentity post(Supplier<String> pathProducer) {
+    return inject(new RestStateBuilderIdentity(transitionBuilder), HttpMethodVerb.POST, pathProducer);
+  }
+
+  public RestStateBuilderIdentity patch(String path) {
+    return inject(new RestStateBuilderIdentity(transitionBuilder), HttpMethodVerb.PATCH, () -> path);
+  }
+
+  public RestStateBuilderIdentity patch(Supplier<String> pathProducer) {
+    return inject(new RestStateBuilderIdentity(transitionBuilder), HttpMethodVerb.PATCH, pathProducer);
+  }
+
+  public RestStateBuilderIdentity put(String path) {
+    return inject(new RestStateBuilderIdentity(transitionBuilder), HttpMethodVerb.PUT, () -> path);
+  }
+
+  public RestStateBuilderIdentity put(Supplier<String> pathProducer) {
+    return inject(new RestStateBuilderIdentity(transitionBuilder), HttpMethodVerb.PUT, pathProducer);
+  }
+
+  public RestStateBuilderIdentity delete(String path) {
+    return inject(new RestStateBuilderIdentity(transitionBuilder), HttpMethodVerb.DELETE, () -> path);
+  }
+
+  public RestStateBuilderIdentity delete(Supplier<String> pathProducer) {
+    return inject(new RestStateBuilderIdentity(transitionBuilder), HttpMethodVerb.DELETE, pathProducer);
+  }
+
+  @Override
+  protected void initialize(ServiceProvider serviceProvider) throws XceptoAdapterInitializationException {}
+
+  @Override
+  protected void addServices(ServiceCollection serviceCollection) {}
+
+  @Override
+  protected void terminate() throws XceptoAdapterTerminationException {}
 }

@@ -5,4 +5,9 @@ public class LoggingProvider implements org.xcepto.xceptoj.interfaces.LoggingPro
   public void logDebug(String message) {
     System.out.println(message);
   }
+
+  @Override
+  public void flush() {
+    System.out.flush();
+  }
 }

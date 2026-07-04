@@ -13,7 +13,7 @@ services:
     image: examples.warehouse.inbound
     build:
       context: .
-      dockerfile: examples.warehouse.inbound.Dockerfile
+      dockerfile: examples/warehouse/inbound.Dockerfile
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_PORT=5672
@@ -25,7 +25,7 @@ services:
     image: examples.warehouse.order
     build:
       context: .
-      dockerfile: examples.warehouse.order.Dockerfile
+      dockerfile: examples/warehouse/order.Dockerfile
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_PORT=5672
@@ -37,7 +37,7 @@ services:
     image: examples.warehouse.stocktake
     build:
       context: .
-      dockerfile: examples.warehouse.stocktake.Dockerfile
+      dockerfile: examples/warehouse/stocktake.Dockerfile
     environment:
       - POSTGRES_URL=jdbc:postgresql://postgres:5432/warehouse
       - POSTGRES_USERNAME=postgres
@@ -49,7 +49,7 @@ services:
     image: examples.warehouse.inventory
     build:
       context: .
-      dockerfile: examples.warehouse.inventory.Dockerfile
+      dockerfile: examples/warehouse/inventory.Dockerfile
     environment:
       - RABBITMQ_HOST=rabbitmq
       - RABBITMQ_PORT=5672
@@ -63,7 +63,7 @@ services:
     image: examples.warehouse.shipping
     build:
       context: .
-      dockerfile: examples.warehouse.shipping.Dockerfile
+      dockerfile: examples/warehouse/shipping.Dockerfile
     environment:
       - RABBITMQ_HOST=rabbitmq
       - RABBITMQ_PORT=5672
