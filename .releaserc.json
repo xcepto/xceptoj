@@ -1,0 +1,54 @@
+{
+  "branches": ["main"],
+  "plugins": [
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "conventionalcommits"
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "conventionalcommits"
+      }
+    ],
+    "@semantic-release/github",
+    [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "./.github/scripts/release.sh xceptoj ${nextRelease.version}"
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "./.github/scripts/release.sh xceptoj.http ${nextRelease.version}"
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "./.github/scripts/release.sh xceptoj.rest ${nextRelease.version}"
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "./.github/scripts/release.sh xceptoj.ssr ${nextRelease.version}"
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "./.github/scripts/release.sh xceptoj.rabbitmq ${nextRelease.version}"
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "./.github/scripts/jreleaser-deploy.sh"
+      }
+    ]
+  ]
+}
