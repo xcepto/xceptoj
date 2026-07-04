@@ -4,10 +4,13 @@ import org.xcepto.xceptoj.exceptions.StateInitException;
 import org.xcepto.xceptoj.exceptions.XceptoTestFailedException;
 import org.xcepto.xceptoj.interfaces.ServiceProvider;
 
+import java.util.concurrent.CompletableFuture;
+
 public abstract class XceptoState {
 
   private final String name;
   private XceptoState nextXceptoState;
+  private TransitionBuilder _builder;
 
   public XceptoState(String name) {
     this.name = name;
@@ -35,5 +38,13 @@ public abstract class XceptoState {
 
   public String getName() {
     return name;
+  }
+
+  void assignBuilder(TransitionBuilder builder) {
+    _builder = builder;
+  }
+
+  protected void propagateExceptions(CompletableFuture<?> future) {
+    _builder.propagateExceptions(future);
   }
 }
