@@ -5,5 +5,5 @@ RUN gradle :examples.warehouse.stocktake:bootJar -x test
 
 FROM eclipse-temurin:21
 WORKDIR /app
-COPY --from=builder /app/examples.warehouse.stocktake/build/libs/*.jar app.jar
+COPY --from=builder /app/examples/warehouse/stocktake/build/libs/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
