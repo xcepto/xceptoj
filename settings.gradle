@@ -25,3 +25,8 @@ include 'examples.warehouse.stocktake'
 project(':examples.warehouse.stocktake').projectDir = file('examples/warehouse/stocktake')
 include 'examples.warehouse.common'
 project(':examples.warehouse.common').projectDir = file('examples/warehouse/common')
+
+include 'examples.docs.api'
+project(':examples.docs.api').projectDir = file('examples/docs.api')
+include 'docs.examples'
+project(':docs.examples').projectDir = file('examples/docs.examples')

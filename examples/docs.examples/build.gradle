@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation project(':xceptoj')
+    testImplementation project(':xceptoj.http')
+    testImplementation project(':xceptoj.rest')
+    testImplementation project(':xceptoj.ssr')
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'com.google.code.gson:gson:2.13.1'
+    testImplementation 'org.testcontainers:testcontainers:1.21.3'
+    testImplementation 'org.slf4j:slf4j-simple:2.0.9'
+}
+
+tasks.named('test') {
+    dependsOn ':examples.docs.api:bootJar'
+    useJUnitPlatform()
+    systemProperty 'api.version', '1.44'
+}
